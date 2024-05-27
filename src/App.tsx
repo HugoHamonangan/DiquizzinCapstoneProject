@@ -8,6 +8,7 @@ import PageTransition from './components/PageTransition';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import LeaderboardPage from './pages/LeaderboardPage';
+import DashboardPage from './pages/DashboardPage';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -46,6 +47,14 @@ const App: React.FC = () => {
             element={
               <PageTransition>
                 <LeaderboardPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <PageTransition>
+                <DashboardPage />
               </PageTransition>
             }
           />

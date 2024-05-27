@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const getInitialLanguage = () => {
+const getInitialLanguage = (): string => {
   const storedLanguage = localStorage.getItem('language');
   return storedLanguage ? storedLanguage : 'en';
 };

@@ -33,13 +33,15 @@ const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
   return (
     <>
       <div className="flex flex-col gap-1 ">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-end gap-3">
           <img
             src={img}
             alt={name}
-            className="object-scale-down block md:hidden w-[9rem] h-[1.5rem] self-end"
+            className="object-scale-down block md:hidden w-fit h-[1.5rem] self-end"
           />
-          <h3 className="font-bold text-xl block sm:hidden">{score}</h3>
+          <h3 className="font-bold text-xl block sm:hidden h-[1.5rem]">
+            {score}
+          </h3>
         </div>
         <div
           className={` ${backgroundColorBaseOnRanking(

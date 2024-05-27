@@ -78,7 +78,7 @@ const Navbar = () => {
     <>
       <header
         className={`${
-          scrolled ? 'shadow-lg' : 'shadow-none'
+          scrolled ? 'shadow-lg bg-[#fbf9f1]' : 'shadow-none bg-none'
         } fixed bg-[#fbf9f1] z-20 top-0 left-0 w-full px-10 md:px-0`}
       >
         <nav className="flex items-center justify-between container mx-auto ">

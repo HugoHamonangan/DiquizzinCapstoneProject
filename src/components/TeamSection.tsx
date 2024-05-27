@@ -63,9 +63,9 @@ const TeamSection: React.FC = () => {
           )}
         </h1>
       </ScrollReveal>
-      <div className="flex flex-wrap justify-center gap-8 items-center">
+      <div className="flex flex-wrap justify-center gap-8 items-center ">
         {teamMembers.map((member) => (
-          <ScrollReveal key={member.name} className="w-full md:w-auto">
+          <ScrollReveal key={member.name} className="w-fit sm:w-auto">
             <Card
               img={member.img}
               name={member.name}

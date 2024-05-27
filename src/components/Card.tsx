@@ -24,12 +24,12 @@ const Card: React.FC<CardProps> = ({
   facebookUser,
 }) => {
   return (
-    <div className="w-[22rem] shadow-card relative overflow-hidden rounded-lg">
+    <div className=" sm:w-[22rem] shadow-card relative overflow-hidden rounded-lg">
       <div className="absolute gradient-blue h-full w-[99.9%] -z-10"></div>
       <div className="absolute bg-white card-clipPath h-full w-full z-0"></div>
       <div className=" z-10 pb-7 relative ml-7 mt-9 pr-9 flex flex-col gap-3">
         <img src={img} alt="Profile" className="w-[11rem]" />
-        <h3 className="font-bold text-xl mt-2">{name}</h3>
+        <h3 className="font-bold text-lg mt-2">{name}</h3>
         <p className="leading-7">{explanation}</p>
         <div className="flex gap-2">
           <a
