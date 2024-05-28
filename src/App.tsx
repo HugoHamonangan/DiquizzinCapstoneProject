@@ -38,7 +38,14 @@ const App: React.FC = () => {
               </PageTransition>
             }
           />
-          <Route path="/login" element={<PageTransition>{user ? <Navigate to="/dashboard" replace /> : <LoginPage />}</PageTransition>} />
+          <Route
+            path="/login"
+            element={
+              <PageTransition>
+                {user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+              </PageTransition>
+            }
+          />
           <Route
             path="/leaderboard"
             element={

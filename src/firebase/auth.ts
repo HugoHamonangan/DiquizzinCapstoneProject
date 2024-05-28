@@ -1,8 +1,15 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { db, auth } from './firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
-export const signUp = async (email: string, password: string, userData: object) => {
+export const signUp = async (
+  email: string,
+  password: string,
+  userData: object
+) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
     await setDoc(doc(db, 'users', user.user.uid), {
@@ -11,7 +18,9 @@ export const signUp = async (email: string, password: string, userData: object) 
     });
     return user.user;
   } catch (error) {
-    throw new Error(error.message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
   }
 };
 
@@ -20,7 +29,9 @@ export const signIn = async (email: string, password: string) => {
     const response = await signInWithEmailAndPassword(auth, email, password);
     return response.user;
   } catch (error) {
-    throw new Error(error.message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
   }
 };
 
