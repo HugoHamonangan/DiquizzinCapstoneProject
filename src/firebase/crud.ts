@@ -10,8 +10,13 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
+interface Data {
+  // Define the structure of your data object here
+}
+
 const generateRandomID = (): string => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let randomID = '';
 
   for (let i = 0; i < 16; i++) {
@@ -21,7 +26,10 @@ const generateRandomID = (): string => {
   return randomID;
 };
 
-export const createData = async (collectionName: string, data: object): Promise<void> => {
+export const createData = async (
+  collectionName: string,
+  data: Data
+): Promise<void> => {
   const id = generateRandomID();
   try {
     const docRef = doc(db, collectionName, id);
@@ -29,73 +37,96 @@ export const createData = async (collectionName: string, data: object): Promise<
       id,
       ...data,
     });
-  } catch (error: any) {
-    console.error('Error while adding document: ', error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error while adding document: ', error.message);
+    }
   }
 };
 
-export const readData = async (collectionName: string, id: string): Promise<any> => {
+export const readData = async (
+  collectionName: string,
+  id: string
+): Promise<Data | null> => {
   try {
     const docRef = doc(db, collectionName, id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       console.log('Document data: ', docSnap.data());
-      return docSnap.data();
+      return docSnap.data() as Data;
     } else {
       console.log('No such document!');
       return null;
     }
-  } catch (error: any) {
-    console.error('Error while reading document: ', error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error while reading document: ', error.message);
+    }
     return null;
   }
 };
 
-export const updateData = async (collectionName: string, id: string, data: object): Promise<void> => {
+export const updateData = async (
+  collectionName: string,
+  id: string,
+  data: Partial<Data>
+): Promise<void> => {
   try {
     const docRef = doc(db, collectionName, id);
     await updateDoc(docRef, {
       id: id,
       ...data,
     });
-  } catch (error: any) {
-    console.error('Error while updating document: ', error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error while updating document: ', error.message);
+    }
   }
 };
 
-export const deleteData = async (collectionName: string, id: string): Promise<void> => {
+export const deleteData = async (
+  collectionName: string,
+  id: string
+): Promise<void> => {
   try {
     const docRef = doc(db, collectionName, id);
     await deleteDoc(docRef);
     console.log('Document successfully deleted!');
-  } catch (error: any) {
-    console.error('Error while deleting document: ', error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error while deleting document: ', error.message);
+    }
   }
 };
 
-export const readAllData = async (collectionName: string): Promise<any[]> => {
+export const readAllData = async (collectionName: string): Promise<Data[]> => {
   try {
-    const newDataArr: any[] = [];
+    const newDataArr: Data[] = [];
     const querySnapshot = await getDocs(collection(db, collectionName));
     querySnapshot.forEach((doc) => {
-      newDataArr.push(doc.data());
+      newDataArr.push(doc.data() as Data);
     });
     console.log(newDataArr);
     return newDataArr;
-  } catch (error: any) {
-    console.error('Error while reading collection: ', error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error while reading collection: ', error.message);
+    }
     return [];
   }
 };
 
-export const listenToCollection = (collectionName: string, callback: (data: any[]) => void) => {
+export const listenToCollection = (
+  collectionName: string,
+  callback: (data: Data[]) => void
+) => {
   const collectionRef = collection(db, collectionName);
 
   return onSnapshot(collectionRef, (querySnapshot) => {
-    const newDataArr: any[] = [];
+    const newDataArr: Data[] = [];
     querySnapshot.forEach((doc) => {
-      newDataArr.push(doc.data());
+      newDataArr.push(doc.data() as Data);
     });
     callback(newDataArr);
   });
