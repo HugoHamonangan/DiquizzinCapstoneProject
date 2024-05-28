@@ -1,6 +1,6 @@
 // src/App.tsx
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import LandingPage from './pages/LandingPage';
 import RegisterPage from './pages/RegisterPage';
@@ -9,9 +9,13 @@ import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import DashboardPage from './pages/DashboardPage';
+import ProtectedRoute from './routes/ProtectedRoute';
+import { UserAuth } from './context/AuthContext';
 
 const App: React.FC = () => {
   const location = useLocation();
+
+  const { user } = UserAuth();
 
   return (
     <>
@@ -34,14 +38,7 @@ const App: React.FC = () => {
               </PageTransition>
             }
           />
-          <Route
-            path="/login"
-            element={
-              <PageTransition>
-                <LoginPage />
-              </PageTransition>
-            }
-          />
+          <Route path="/login" element={<PageTransition>{user ? <Navigate to="/dashboard" replace /> : <LoginPage />}</PageTransition>} />
           <Route
             path="/leaderboard"
             element={
@@ -54,7 +51,9 @@ const App: React.FC = () => {
             path="/dashboard"
             element={
               <PageTransition>
-                <DashboardPage />
+                <ProtectedRoute user={user}>
+                  <DashboardPage />
+                </ProtectedRoute>
               </PageTransition>
             }
           />
