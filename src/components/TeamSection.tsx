@@ -30,7 +30,7 @@ const teamMembers = [
   },
   {
     img: johan,
-    name: 'Johan Sitanggang 45',
+    name: 'Johan Sitanggang',
     explanationEn: 'Responsible for making Backend, Authentication and API of this website application.',
     explanationId: 'Bertanggung jawab untuk membuat dan mengintegrasi Backend, autentikasi dan serta API dari aplikasi situs web ini.',
     instagramUser: 'johan_sitanggang',

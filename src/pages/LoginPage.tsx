@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
     <>
       <div className="mt-[11rem] flex justify-center pb-14">
         <div className=" w-full max-w-[30rem]">
-          <h1 className="font-extrabold text-3xl text-center mb-7">{translate(language, 'Login to Diquizzin', 'Halaman Masuk')}</h1>
+          <h1 className="font-extrabold text-3xl text-center mb-7">{translate(language, 'Login Page', 'Halaman Masuk')}</h1>
           <form onSubmit={handleSubmit} className="rounded px-8 pt-6  max-w-[40rem] mx-auto">
             <div className="mb-4">
               <Inputs id="email" type="email" placeholder="Email" value={email} setter={(e) => setEmail(e.target.value)} />
