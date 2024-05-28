@@ -4,7 +4,7 @@ import google from '../img/google.png';
 import { useAppSelector } from '../states/hooks/hooks';
 import { translate } from '../utils/helperFunction';
 import { Link, useNavigate } from 'react-router-dom';
-// import { signIn } from '../firebase/auth';
+import { signIn } from '../firebase/auth';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,11 +24,11 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      // const response = await signIn(email, password);
-      console.log('Navigating to /dashboard');
-      setTimeout(() => {
+      const response = await signIn(email, password);
+      if (response) {
+        console.log('Navigating to /dashboard');
         navigate('/dashboard');
-      }, 3000);
+      }
     } catch (error) {
       if (error instanceof Error) {
         alert(`Login failed: ${error.message}`);

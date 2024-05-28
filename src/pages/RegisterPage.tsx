@@ -4,7 +4,7 @@ import google from '../img/google.png';
 import { useAppSelector } from '../states/hooks/hooks';
 import { translate } from '../utils/helperFunction';
 import { Link, useNavigate } from 'react-router-dom';
-// import { signUp } from '../firebase/auth';
+import { signUp } from '../firebase/auth';
 
 const RegisterPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -16,11 +16,11 @@ const RegisterPage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  // const userData = {
-  //   name,
-  //   email,
-  //   score: 0,
-  // };
+  const userData = {
+    name,
+    email,
+    score: 0,
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +31,12 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      // const response = await signUp(email, password, userData);
-      navigate('/dashboard');
+      const response = await signUp(email, password, userData);
+      if (response) {
+        navigate('/dashboard');
 
-      alert('Registration successful!'); // Menampilkan notifikasi
+        alert('Registration successful!'); // Menampilkan notifikasi
+      }
 
       // Navigasi hanya jika pendaftaran berhasil
     } catch (error) {
