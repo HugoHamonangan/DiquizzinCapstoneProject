@@ -1,11 +1,17 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from 'react';
 import { auth, db } from '../firebase/firebase';
 
 interface User {
   id: string;
-  name: string;  
+  name: string;
 }
 
 interface UserAuthType {
@@ -22,25 +28,24 @@ export function UserAuth(): UserAuthType {
   return context;
 }
 
-export default function AuthContextProvider({ children }) {
-  // const [isLoggedOut, setIsLoggedOut] = useState(true);
-  const [user, setUser] = useState(null);
+interface AuthContextProviderProps {
+  children: ReactNode;
+}
+
+export default function AuthContextProvider({
+  children,
+}: AuthContextProviderProps) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        // setIsLoggedOut(false);
-
         onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
-          setUser(doc.data());
+          setUser(doc.data() as User); // Cast to User type
           setLoading(false); // Set loading to false after setting user
         });
-        // setUser(currentUser);
-
-        console.log('It ran again');
       } else {
-        // setIsLoggedOut(true);
         setUser(null);
         setLoading(false); // Set loading to false after setting user
       }
