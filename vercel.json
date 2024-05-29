@@ -1,8 +1,24 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "src": "/",
+      "dest": "/"
+    },
+    {
+      "src": "/leaderboard",
+      "dest": "/"
+    },
+    {
+      "src": "/login",
+      "dest": "/"
+    },
+    {
+      "src": "/register",
+      "dest": "/"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/"
     }
   ]
 }
