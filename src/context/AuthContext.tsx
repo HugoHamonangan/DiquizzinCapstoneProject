@@ -33,6 +33,7 @@ interface User {
     expirationTime: number;
   };
   uid: string;
+  name: string;
 }
 
 interface UserAuthType {

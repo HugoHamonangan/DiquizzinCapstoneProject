@@ -1,8 +1,31 @@
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 
-interface User {
-  id: string;
+// types.ts
+export interface ProviderData {
+  providerId: string;
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  phoneNumber: string | null;
+  photoURL: string | null;
+}
+
+export interface User {
+  email: string;
+  displayName: string | null;
+  emailVerified: boolean;
+  isAnonymous: boolean;
+  lastLoginAt: string;
+  phoneNumber: string | null;
+  photoURL: string | null;
+  providerData: ProviderData[];
+  stsTokenManager: {
+    refreshToken: string;
+    accessToken: string;
+    expirationTime: number;
+  };
+  uid: string;
   name: string;
 }
 
