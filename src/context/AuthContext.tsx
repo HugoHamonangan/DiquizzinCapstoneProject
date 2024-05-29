@@ -9,9 +9,30 @@ import {
 } from 'react';
 import { auth, db } from '../firebase/firebase';
 
+interface ProviderData {
+  providerId: string;
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  phoneNumber: string | null;
+  photoURL: string | null;
+}
+
 interface User {
-  id: string;
-  name: string;
+  email: string;
+  displayName: string | null;
+  emailVerified: boolean;
+  isAnonymous: boolean;
+  lastLoginAt: string;
+  phoneNumber: string | null;
+  photoURL: string | null;
+  providerData: ProviderData[];
+  stsTokenManager: {
+    refreshToken: string;
+    accessToken: string;
+    expirationTime: number;
+  };
+  uid: string;
 }
 
 interface UserAuthType {
@@ -40,11 +61,26 @@ export default function AuthContextProvider({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log('Auth state changed, current user:', currentUser);
       if (currentUser) {
-        onSnapshot(doc(db, 'users', currentUser.uid), (doc) => {
-          setUser(doc.data() as User); // Cast to User type
-          setLoading(false); // Set loading to false after setting user
-        });
+        onSnapshot(
+          doc(db, 'users', currentUser.uid),
+          (docSnapshot) => {
+            if (docSnapshot.exists()) {
+              const userData = docSnapshot.data() as User;
+              console.log('Document data:', userData);
+              setUser(userData);
+            } else {
+              console.log('No such document!');
+              setUser(null);
+            }
+            setLoading(false); // Set loading to false after setting user
+          },
+          (error) => {
+            console.error('Error fetching document:', error);
+            setLoading(false);
+          }
+        );
       } else {
         setUser(null);
         setLoading(false); // Set loading to false after setting user
