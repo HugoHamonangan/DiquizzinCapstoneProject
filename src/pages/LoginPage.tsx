@@ -28,7 +28,6 @@ const LoginPage: React.FC = () => {
       if (response) {
         console.log('Navigating to /dashboard');
         setTimeout(() => {
-          // navigate()
           location.href = '/dashboard';
         }, 3000);
       }
