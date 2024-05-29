@@ -11,6 +11,7 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { UserAuth } from './context/AuthContext';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const App: React.FC = () => {
       <Navbar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          <Route path="*" element={<NotFoundPage />} />
           <Route
             path="/"
             element={
