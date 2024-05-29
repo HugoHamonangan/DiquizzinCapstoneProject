@@ -3,7 +3,7 @@ import Inputs from '../components/Inputs';
 import google from '../img/google.png';
 import { useAppSelector } from '../states/hooks/hooks';
 import { translate } from '../utils/helperFunction';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { signIn } from '../firebase/auth';
 
 const LoginPage: React.FC = () => {
@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
 
   const language = useAppSelector((state) => state.language);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +28,8 @@ const LoginPage: React.FC = () => {
       if (response) {
         console.log('Navigating to /dashboard');
         setTimeout(() => {
-          navigate('/dashboard');
+          // navigate()
+          location.href = '/dashboard';
         }, 3000);
       }
     } catch (error) {
