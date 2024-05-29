@@ -33,12 +33,12 @@ const RegisterPage: React.FC = () => {
     try {
       const response = await signUp(email, password, userData);
       if (response) {
-        navigate('/dashboard');
-
-        alert('Registration successful!'); // Menampilkan notifikasi
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000);
+        alert('Registration successful!'); 
       }
-
-      // Navigasi hanya jika pendaftaran berhasil
+      
     } catch (error) {
       if (error instanceof Error) {
         alert(`Registration failed: ${error.message}`);

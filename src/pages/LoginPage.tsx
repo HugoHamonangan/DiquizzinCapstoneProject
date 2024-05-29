@@ -27,7 +27,9 @@ const LoginPage: React.FC = () => {
       const response = await signIn(email, password);
       if (response) {
         console.log('Navigating to /dashboard');
-        navigate('/dashboard');
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 3000);
       }
     } catch (error) {
       if (error instanceof Error) {
