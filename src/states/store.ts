@@ -1,24 +1,9 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-
-const getInitialLanguage = (): string => {
-  const storedLanguage = localStorage.getItem('language');
-  return storedLanguage ? storedLanguage : 'en';
-};
-
-const languageSlice = createSlice({
-  name: 'language',
-  initialState: getInitialLanguage,
-  reducers: {
-    setEnglish: () => 'en',
-    setIndonesian: () => 'id',
-  },
-});
-
-export const { setEnglish, setIndonesian } = languageSlice.actions;
+import { configureStore } from '@reduxjs/toolkit';
+import languageReducer from '../states/slices/languageSlices';
 
 const store = configureStore({
   reducer: {
-    language: languageSlice.reducer,
+    language: languageReducer,
   },
 });
 

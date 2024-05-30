@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../states/hooks/hooks';
-import { setEnglish, setIndonesian } from '../states/store';
+import { setEnglish, setIndonesian } from '../states/slices/languageSlices';
 import { translate } from '../utils/helperFunction';
 import { scrollToSection } from '../utils/scrollToSection';
 import logo from '../img/logo.png';

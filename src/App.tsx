@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -12,6 +11,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { UserAuth } from './context/AuthContext';
 import NotFoundPage from './pages/NotFoundPage';
+import PlayPage from './pages/PlayPage';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -20,48 +20,73 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="*" element={<NotFoundPage />} />
           <Route
             path="/"
             element={
-              <PageTransition>
-                <LandingPage />
-              </PageTransition>
+              <>
+                <Navbar />
+                <PageTransition>
+                  <LandingPage />
+                </PageTransition>
+              </>
             }
           />
           <Route
             path="/register"
             element={
-              <PageTransition>
-                <RegisterPage />
-              </PageTransition>
+              <>
+                <Navbar />
+                <PageTransition>
+                  <RegisterPage />
+                </PageTransition>
+              </>
             }
           />
           <Route
             path="/login"
             element={
-              <PageTransition>
-                {user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
-              </PageTransition>
+              <>
+                <Navbar />
+                <PageTransition>
+                  {user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+                </PageTransition>
+              </>
             }
           />
           <Route
             path="/leaderboard"
             element={
-              <PageTransition>
-                <LeaderboardPage />
-              </PageTransition>
+              <>
+                <Navbar />
+                <PageTransition>
+                  <LeaderboardPage />
+                </PageTransition>
+              </>
             }
           />
           <Route
             path="/dashboard"
             element={
+              <>
+                <Navbar />
+                <PageTransition>
+                  <ProtectedRoute user={user}>
+                    <DashboardPage />
+                  </ProtectedRoute>
+                </PageTransition>
+              </>
+            }
+          />
+
+          <Route
+            path="/play"
+            element={
               <PageTransition>
                 <ProtectedRoute user={user}>
-                  <DashboardPage />
+                  <PlayPage />
                 </ProtectedRoute>
               </PageTransition>
             }
