@@ -67,7 +67,9 @@ const Quiz: React.FC<QuizProps> = ({ playAPI }) => {
           <ul>
             {[...question.incorrect_answers, question.correct_answer].map(
               (answer: string, answerIndex: number) => (
-                <li key={answerIndex}>{answer}</li>
+                <li key={answerIndex}>
+                  {String.fromCharCode(97 + answerIndex)}. {answer}
+                </li>
               )
             )}
           </ul>
