@@ -11,6 +11,7 @@ const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+  const [eye, setEye] = useState(false);
 
   const language = useAppSelector((state) => state.language);
 
@@ -36,9 +37,8 @@ const RegisterPage: React.FC = () => {
         setTimeout(() => {
           navigate('/dashboard');
         }, 1000);
-        alert('Registration successful!'); 
+        alert('Registration successful!');
       }
-      
     } catch (error) {
       if (error instanceof Error) {
         alert(`Registration failed: ${error.message}`);
@@ -47,6 +47,10 @@ const RegisterPage: React.FC = () => {
         console.error('Unknown error', error);
       }
     }
+  };
+
+  const toggleEye = () => {
+    setEye(!eye);
   };
 
   return (
@@ -78,14 +82,29 @@ const RegisterPage: React.FC = () => {
                 setter={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="mb-6">
+            <div className="mb-6 relative flex items-center">
               <Inputs
                 id="password"
-                type="password"
+                type={eye ? 'password' : 'text'}
                 placeholder="Password"
                 value={password}
                 setter={(e) => setPassword(e.target.value)}
               />
+              <div
+                className="absolute right-3 top-3 cursor-pointer"
+                onClick={toggleEye}
+              >
+                <div className="relative">
+                  <p>&#128065;</p>
+                  <div
+                    className={`absolute top-0 font-extrabold ${
+                      eye ? 'block' : 'hidden'
+                    }`}
+                  >
+                    {')('}
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="flex flex-col gap-5 justify-between">
               <Link

@@ -10,6 +10,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [eye, setEye] = useState(false);
 
   const language = useAppSelector((state) => state.language);
 
@@ -40,23 +41,72 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const toggleEye = () => {
+    setEye(!eye);
+  };
+
   return (
     <>
       <div className="mt-[11rem] flex justify-center pb-14">
         <div className=" w-full max-w-[30rem]">
-          <h1 className="font-extrabold text-3xl text-center mb-7">{translate(language, 'Login Page', 'Halaman Masuk')}</h1>
-          <form onSubmit={handleLogin} className="rounded px-8 pt-6  max-w-[40rem] mx-auto">
+          <h1 className="font-extrabold text-3xl text-center mb-7">
+            {translate(language, 'Login Page', 'Halaman Masuk')}
+          </h1>
+          <form
+            onSubmit={handleLogin}
+            className="rounded px-8 pt-6  max-w-[40rem] mx-auto"
+          >
             <div className="mb-4">
-              <Inputs id="email" type="email" placeholder="Email" value={email} setter={(e) => setEmail(e.target.value)} />
+              <Inputs
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                setter={(e) => setEmail(e.target.value)}
+              />
             </div>
-            <div className="mb-6">
-              <Inputs id="password" type="password" placeholder="Password" value={password} setter={(e) => setPassword(e.target.value)} />
+            <div className="mb-6 relative flex items-center">
+              <Inputs
+                id="password"
+                type={eye ? 'password' : 'text'}
+                placeholder="Password"
+                value={password}
+                setter={(e) => setPassword(e.target.value)}
+              />
+              <div
+                className="absolute right-3 top-3 cursor-pointer"
+                onClick={toggleEye}
+              >
+                <div className="relative">
+                  <p>&#128065;</p>
+                  <div
+                    className={`absolute top-0 font-extrabold ${
+                      eye ? 'block' : 'hidden'
+                    }`}
+                  >
+                    {')('}
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="flex flex-col gap-5 justify-between">
-              <Link to={'/register'} className="hover:text-blue-500 cursor-pointer w-fit mx-auto text-gray-700">
-                {translate(language, "Don't Have Any Account Yet? Login", 'Belum Punya Akun? Masuk')}
+              <Link
+                to={'/register'}
+                className="hover:text-blue-500 cursor-pointer w-fit mx-auto text-gray-700"
+              >
+                {translate(
+                  language,
+                  "Don't Have Any Account Yet? Login",
+                  'Belum Punya Akun? Masuk'
+                )}
               </Link>
-              <button disabled={isSigningIn} className={`${isSigningIn ? 'bg-gray-300' : 'bg-[#0C356A] '} hover:bg-blue-700 transition-all text-white font-bold py-3 px-4 rounded-lg focus:outline-none`} type="submit">
+              <button
+                disabled={isSigningIn}
+                className={`${
+                  isSigningIn ? 'bg-gray-300' : 'bg-[#0C356A] '
+                } hover:bg-blue-700 transition-all text-white font-bold py-3 px-4 rounded-lg focus:outline-none`}
+                type="submit"
+              >
                 {translate(language, 'Login', 'Masuk')}
               </button>
             </div>

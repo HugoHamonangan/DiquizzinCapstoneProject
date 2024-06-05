@@ -19,6 +19,7 @@ interface ProviderData {
 }
 
 interface User {
+  score: number;
   email: string;
   displayName: string | null;
   emailVerified: boolean;

@@ -49,6 +49,7 @@ const DashboardPage: React.FC = () => {
           className="absolute -right-[0rem] bottom-0 md:-bottom-[1rem] w-[30%] group-hover:-right-5"
         />
       </Link>
+      <h1 className='p-3 rounded-lg mt-8 border border-[#F9A826]'>{translate(language, 'Your Score is', 'Skor Kamu adalah') + ' '}{user?.score}</h1>      
     </div>
   );
 };

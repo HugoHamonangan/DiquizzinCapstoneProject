@@ -66,6 +66,7 @@ const Category: React.FC<CategoryProps> = ({ setCategory, setPlayAPI }) => {
 
   return (
     <div className="container mx-auto px-10 md:px-0 flex flex-col gap-7">
+ 
       <h1 className="text-[#ff964a] text-2xl text-center font-bold mt-11 mb-6">
         CHOOSE THE QUIZZES TOPIC YOU WANT TO PLAY
       </h1>

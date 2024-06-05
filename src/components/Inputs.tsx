@@ -24,7 +24,7 @@ const Inputs = ({
       onChange={setter}
       placeholder={placeholder}
       required
-    />
+    />    
   );
 };
 

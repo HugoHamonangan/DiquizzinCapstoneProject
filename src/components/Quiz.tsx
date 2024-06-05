@@ -1,22 +1,13 @@
-// import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { UserAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { updateData } from '../firebase/crud';
 import SingleQuestion from './SingleQuestion';
+import GoogleTranslate from './GoogleTranslate';
 
 interface QuizProps {
   playAPI: string;
 }
-
-// interface QuizData {
-//   type: string;
-//   difficulty: string;
-//   category: string;
-//   question: string;
-//   correct_answer: string;
-//   incorrect_answers: string[];
-// }
 
 interface QuestionAndAnswer {
   question: string;
@@ -54,14 +45,14 @@ const shuffle = (array: string[]): string[] => {
   let currentIndex = array.length,
     randomIndex;
 
-  // while there remain elements to shuffle
   while (currentIndex != 0) {
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
-    // and swap it with the current element
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 
   return array;
@@ -69,11 +60,11 @@ const shuffle = (array: string[]): string[] => {
 
 const Quiz: React.FC<QuizProps> = ({ playAPI }) => {
   const [api, setAPI] = useState<string>('');
-  // const [data, setData] = useState<QuizData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // mapping each question & its answers
-  const [questionsAndAnswers, setQuestionsAndAnswers] = useState<QuestionAndAnswer[]>([]);
+  const [questionsAndAnswers, setQuestionsAndAnswers] = useState<
+    QuestionAndAnswer[]
+  >([]);
   const [warning, setWarning] = useState<boolean>(false);
   const [numCorrectAnswer, setNumCorrectAnswer] = useState(0);
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -91,7 +82,10 @@ const Quiz: React.FC<QuizProps> = ({ playAPI }) => {
           responseJson.results.map((questionObject: QuestionObject) => {
             return {
               question: questionObject.question,
-              shuffledAnswers: shuffle([...questionObject.incorrect_answers, questionObject.correct_answer]),
+              shuffledAnswers: shuffle([
+                ...questionObject.incorrect_answers,
+                questionObject.correct_answer,
+              ]),
               correctAnswer: questionObject.correct_answer,
               selectedAnswer: '',
             };
@@ -120,29 +114,35 @@ const Quiz: React.FC<QuizProps> = ({ playAPI }) => {
   const updateAnswer = (currentQuestion: string, answer: string) => {
     setQuestionsAndAnswers(
       questionsAndAnswers.map((questionObject: QuestionAndAnswer) => {
-        return questionObject.question === currentQuestion ? { ...questionObject, selectedAnswer: answer } : questionObject;
+        return questionObject.question === currentQuestion
+          ? { ...questionObject, selectedAnswer: answer }
+          : questionObject;
       })
     );
   };
 
   const submitAnswers = () => {
-    // check if some questions are not answered
-    const notAllAnswered = questionsAndAnswers.some((questionObject) => questionObject.selectedAnswer === '');
+    const notAllAnswered = questionsAndAnswers.some(
+      (questionObject) => questionObject.selectedAnswer === ''
+    );
 
     setWarning(notAllAnswered);
 
-    // conditions if all question have been answered
     if (!notAllAnswered) {
       let totalCorrectAnswer = 0;
       questionsAndAnswers.forEach((questionObject) => {
-        // compare selected answer and correct andswer
         if (questionObject.selectedAnswer === questionObject.correctAnswer) {
           totalCorrectAnswer += 1;
         }
       });
 
-      // update user's score
-      updateData('users', user?.uid, { score: totalCorrectAnswer + user?.score });
+      if (user?.uid && user?.score !== undefined) {
+        updateData('users', user.uid, {
+          score: totalCorrectAnswer + user.score,
+        });
+      } else {
+        console.error('User ID or score is not defined');
+      }
 
       setNumCorrectAnswer(totalCorrectAnswer);
       setShowResult(true);
@@ -176,27 +176,51 @@ const Quiz: React.FC<QuizProps> = ({ playAPI }) => {
   return (
     <>
       {loading ? (
-        <p className="flex items-center justify-center h-screen">Loading...</p>
+        <p className="flex items-center justify-center h-screen text-xl">
+          Loading ...
+        </p>
       ) : (
         <>
           <div className="max-w-5xl mx-auto flex flex-col justify-center items-center mt-10 space-y-2 mb-[50px]">
-            {showResult && (
-              <div>
-                <p>Total Question: 15</p>
-                <p>Correct Answer: {numCorrectAnswer}</p>
-              </div>
+            <div className="container px-2 md:px-4 py-2 mx-auto">
+              <div id="google_translate_element"></div>
+              <h1 className="text-3xl !font-bold uppercase text-center mb-11 text-[#f9a826]">
+                {playAPI + ''} Quiz
+              </h1>
+              <GoogleTranslate />
+              {questionElements}
+            </div>
+            {warning && (
+              <p className="text-red-500 text-lg font-semibold">
+                Please answer all questions before submit!
+              </p>
             )}
-            <div className="container px-4 py-2 bg-blue-300">{questionElements}</div>
-            {warning && <p className="text-red-500 text-lg font-semibold">Please answer all questions before submit!</p>}
 
             {questionsAndAnswers.length > 0 && !showResult ? (
-              <button onClick={submitAnswers} className="bg-blue-500 hover:bg-blue-800 font-bold text-white rounded-md px-4 py-2 w-1/2">
+              <button
+                onClick={submitAnswers}
+                className="bg-[#f9a826] hover:bg-yellow-600 font-bold text-white rounded-md mt-11 px-6 py-3 w-fit"
+              >
                 Submit
               </button>
             ) : null}
 
             {showResult && (
-              <button onClick={resetQuiz} className="bg-blue-500 hover:bg-blue-800 font-bold text-white rounded-md px-4 py-2">
+              <div className="w-full flex gap-3 rounded-lg justify-center py-11">
+                <p className="p-3 bg-yellow-500 rounded-lg">
+                  Total Question: 15
+                </p>
+                <p className="p-3 bg-green-500 rounded-lg">
+                  Correct Answer: {numCorrectAnswer}
+                </p>
+              </div>
+            )}
+
+            {showResult && (
+              <button
+                onClick={resetQuiz}
+                className="bg-blue-500 hover:bg-blue-800 font-bold text-white rounded-md px-4 py-2"
+              >
                 Go to Dashboard
               </button>
             )}
