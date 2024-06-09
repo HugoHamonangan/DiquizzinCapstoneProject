@@ -11,7 +11,9 @@ import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { UserAuth } from './context/AuthContext';
 import NotFoundPage from './pages/NotFoundPage';
-import PlayPage from './pages/PlayPage';
+// import PlayPage from './pages/PlayPage';
+import CategoryPage from './pages/CategoryPage';
+import QuizPage from './pages/QuizPage';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -80,13 +82,22 @@ const App: React.FC = () => {
               </>
             }
           />
-
           <Route
-            path="/play"
+            path="/category"
             element={
               <PageTransition>
                 <ProtectedRoute user={user}>
-                  <PlayPage />
+                  <CategoryPage />
+                </ProtectedRoute>
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/quiz"
+            element={
+              <PageTransition>
+                <ProtectedRoute user={user}>
+                  <QuizPage />
                 </ProtectedRoute>
               </PageTransition>
             }
