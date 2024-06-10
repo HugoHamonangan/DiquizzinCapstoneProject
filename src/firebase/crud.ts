@@ -1,22 +1,16 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 interface Data {
   // Define the structure of your data object here
+  email: string;
+  name: string;
+  score: number;
+  uid: string;
 }
 
 const generateRandomID = (): string => {
-  const chars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let randomID = '';
 
   for (let i = 0; i < 16; i++) {
@@ -26,10 +20,7 @@ const generateRandomID = (): string => {
   return randomID;
 };
 
-export const createData = async (
-  collectionName: string,
-  data: Data
-): Promise<void> => {
+export const createData = async (collectionName: string, data: Data): Promise<void> => {
   const id = generateRandomID();
   try {
     const docRef = doc(db, collectionName, id);
@@ -44,10 +35,7 @@ export const createData = async (
   }
 };
 
-export const readData = async (
-  collectionName: string,
-  id: string
-): Promise<Data | null> => {
+export const readData = async (collectionName: string, id: string): Promise<Data | null> => {
   try {
     const docRef = doc(db, collectionName, id);
     const docSnap = await getDoc(docRef);
@@ -67,11 +55,7 @@ export const readData = async (
   }
 };
 
-export const updateData = async (
-  collectionName: string,
-  id: string,
-  data: Partial<Data>
-): Promise<void> => {
+export const updateData = async (collectionName: string, id: string, data: Partial<Data>): Promise<void> => {
   try {
     const docRef = doc(db, collectionName, id);
     await updateDoc(docRef, {
@@ -85,10 +69,7 @@ export const updateData = async (
   }
 };
 
-export const deleteData = async (
-  collectionName: string,
-  id: string
-): Promise<void> => {
+export const deleteData = async (collectionName: string, id: string): Promise<void> => {
   try {
     const docRef = doc(db, collectionName, id);
     await deleteDoc(docRef);
@@ -117,10 +98,7 @@ export const readAllData = async (collectionName: string): Promise<Data[]> => {
   }
 };
 
-export const listenToCollection = (
-  collectionName: string,
-  callback: (data: Data[]) => void
-) => {
+export const listenToCollection = (collectionName: string, callback: (data: Data[]) => void) => {
   const collectionRef = collection(db, collectionName);
 
   return onSnapshot(collectionRef, (querySnapshot) => {
