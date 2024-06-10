@@ -3,6 +3,10 @@ import { db } from './firebase';
 
 interface Data {
   // Define the structure of your data object here
+  email: string;
+  name: string;
+  score: number;
+  uid: string;
 }
 
 const generateRandomID = (): string => {
