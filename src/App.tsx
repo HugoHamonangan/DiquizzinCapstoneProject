@@ -85,11 +85,9 @@ const App: React.FC = () => {
           <Route
             path="/category"
             element={
-              <PageTransition>
-                <ProtectedRoute user={user}>
-                  <CategoryPage />
-                </ProtectedRoute>
-              </PageTransition>
+              <ProtectedRoute user={user}>
+                <CategoryPage />
+              </ProtectedRoute>
             }
           />
           <Route

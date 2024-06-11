@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import mathImage from '../img/quizImage.png';
 import sportsImage from '../img/sportsImage.png';
 import geographyImage from '../img/geographyImages.png';
@@ -6,108 +6,134 @@ import animalsImage from '../img/animalsImage.png';
 import booksImage from '../img/booksImage.png';
 import computersImage from '../img/computerImage.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../states/hooks/hooks';
-import { setIsUserPlayingYes } from '../states/slices/isUserPlayingSlices';
-import CryptoJS from 'crypto-js';
+import PageTransition from '../components/PageTransition';
+import Modal from '../components/Modal';
+
 
 type InterfaceDataOfCard = {
   img: string;
   title: string;
-  category: string;
-  api: string;
+  category: number;
 };
 
 const dataOfCard: InterfaceDataOfCard[] = [
   {
     img: mathImage,
     title: 'Mathematic',
-    category: 'Mathematic',
-    api: 'https://opentdb.com/api.php?amount=15&category=19&difficulty=medium&type=multiple',
+    category: 19,
   },
   {
     img: sportsImage,
     title: 'Sports',
-    category: 'Sports',
-    api: 'https://opentdb.com/api.php?amount=15&category=21&difficulty=medium&type=multiple',
+    category: 21,
   },
   {
     img: geographyImage,
     title: 'Geography',
-    category: 'Geography',
-    api: 'https://opentdb.com/api.php?amount=15&category=22&difficulty=medium&type=multiple',
+    category: 22,
   },
   {
     img: animalsImage,
     title: 'Animals',
-    category: 'Animals',
-    api: 'https://opentdb.com/api.php?amount=15&category=27&difficulty=medium&type=multiple',
+    category: 27,
   },
   {
     img: booksImage,
     title: 'Books',
-    category: 'Books',
-    api: 'https://opentdb.com/api.php?amount=15&category=10&difficulty=medium&type=multiple',
+    category: 10,
   },
   {
     img: computersImage,
     title: 'Computer',
-    category: 'Computer',
-    api: 'https://opentdb.com/api.php?amount=15&category=18&difficulty=medium&type=multiple',
+    category: 18,
   },
 ];
 
 const CategoryPage: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const [modal, setModal] = useState<boolean>(false);
+  const [difficulty, setDifficulty] = useState<string>('');
+  const [amountOfQuestion, setAmountOfQuestion] = useState<number>(0);
+  const [imgModal, setImgModal] = useState<string>('');
+  const [category, setCategory] = useState<number>(0);
   const navigate = useNavigate();
-  const secretKey = 'b8@#gF^7jD!kLQpO4rT$zXcV9nW1yU5&'; // Example of a strong secret key
 
   useEffect(() => {
     if (localStorage.getItem('isUserPlaying') === '"yes"') {
-      navigate('/quiz');
+      // navigate('/quiz');
     }
   }, [navigate]);
 
-  const handlePlay = async (api: string) => {
-    dispatch(setIsUserPlayingYes());
-
-    try {
-      const response = await fetch(api);
-      const data = await response.json();
-      const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();
-      localStorage.setItem('quizData', encryptedData);
-
-      navigate('/quiz');
-    } catch (error) {
-      console.error('Error fetching quiz data:', error);
-    }
+  const handleDifficulty = (difficult: string) => {
+    setDifficulty(difficult);
   };
 
+  const handleAmountOfQuestion = (amount: number) => {
+    setAmountOfQuestion(amount);
+  };
+
+  const handleModal = (img: string, category: number) => {
+    setModal(!modal);
+    setImgModal(img);
+    setCategory(category);    
+  };
+
+
   return (
-    <div className="container mx-auto px-10 md:px-0 flex flex-col gap-7">
-      <h1 className="text-[#ff964a] text-2xl text-center font-bold mt-11 mb-6">CHOOSE THE QUIZZES TOPIC YOU WANT TO PLAY</h1>
-      <div className="flex justify-center gap-7 flex-wrap">
-        {dataOfCard.map((item, index) => (
-          <div className="flex flex-col shadow-lg p-0 rounded-lg overflow-hidden pb-6" key={index}>
-            <div className="overflow-hidden border">
-              <img src={item.img} alt={item.img} className="object-cover w-full scale-105 rounded-lg" />
-            </div>
+    <>
+      <Modal
+        modal={modal}
+        handleModal={handleModal}
+        difficulty={difficulty}
+        handleDifficulty={handleDifficulty}
+        amountOfQuestion={amountOfQuestion}
+        handleAmountOfQuestion={handleAmountOfQuestion}
+        img={imgModal}
+        category={category}
+      />
 
-            <div className="flex flex-col gap-2 my-5 px-5">
-              <h3 className="font-bold">Quiz</h3>
-              <h1 className="font-extrabold text-xl">{item.title}</h1>
-              <h4>15 Questions</h4>
-            </div>
+      <PageTransition>
+        <div className="container mx-auto px-10 md:px-0 flex flex-col gap-7">
+          <h1 className="text-[#ff964a] text-2xl text-center font-bold mt-11 mb-6">
+            CHOOSE THE QUIZZES TOPIC YOU WANT TO PLAY
+          </h1>
+          <div className="flex justify-center gap-7 flex-wrap">
+            {dataOfCard.map((item, index) => (
+              <div
+                className="flex flex-col shadow-lg p-0 rounded-lg overflow-hidden pb-6 hover:scale-105 transition-all cursor-pointer"
+                key={index}
+              >
+                <div className="overflow-hidden border">
+                  <img
+                    src={item.img}
+                    alt={item.img}
+                    className="object-cover w-full scale-105 rounded-lg"
+                  />
+                </div>
 
-            <button className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all p-2 mx-5 font-bold" onClick={() => handlePlay(item.api)}>
-              Play
-            </button>
+                <div className="flex flex-col gap-2 my-5 px-5">
+                  <h3 className="font-bold">Quiz</h3>
+                  <h1 className="font-extrabold text-xl">{item.title}</h1>
+                </div>
+
+                <button
+                  className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all p-2 mx-5 font-bold"
+                  onClick={() => handleModal(item.img, item.category)}
+                >
+                  Play
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <Link to={'/dashboard'} className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all py-3 px-5 mx-auto my-20 font-bold w-fit">
-        Back To Dashboard
-      </Link>
-    </div>
+
+          <Link
+            to={'/dashboard'}
+            className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all py-3 px-5 mx-auto my-20 font-bold w-fit"
+          >
+            Back To Dashboard
+          </Link>
+        </div>
+      </PageTransition>
+    </>
   );
 };
 

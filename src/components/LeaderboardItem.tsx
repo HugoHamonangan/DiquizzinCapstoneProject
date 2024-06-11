@@ -1,11 +1,11 @@
 import React from 'react';
 
 type LeaderboardItemProps = {
-  ranking: string;
+  ranking: number;
   name: string;
   email: string;
   img: string;
-  score: string;
+  score: number;
 };
 
 const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
@@ -15,15 +15,15 @@ const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
   img,
   score,
 }): JSX.Element => {
-  const backgroundColorBaseOnRanking = (ranking: string) => {
+  const backgroundColorBaseOnRanking = (ranking: number) => {
     switch (ranking) {
-      case '1':
+      case 1:
         return 'bg-golden';
-      case '2':
+      case 2:
         return 'bg-silver';
-      case '3':
+      case 3:
         return 'bg-bronze';
-      case '4':
+      case 4:
         return 'bg-forth';
       default:
         return 'bg-default';

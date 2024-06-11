@@ -29,7 +29,10 @@ const shuffle = (array: string[]): string[] => {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 
   return array;
@@ -37,7 +40,9 @@ const shuffle = (array: string[]): string[] => {
 
 const QuizPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [questionsAndAnswers, setQuestionsAndAnswers] = useState<QuestionAndAnswer[]>([]);
+  const [questionsAndAnswers, setQuestionsAndAnswers] = useState<
+    QuestionAndAnswer[]
+  >([]);
   const [warning, setWarning] = useState<boolean>(false);
   const [numCorrectAnswer, setNumCorrectAnswer] = useState(0);
   const [showResult, setShowResult] = useState<boolean>(false);
@@ -45,7 +50,7 @@ const QuizPage: React.FC = () => {
 
   const { user } = UserAuth();
   const navigate = useNavigate();
-  const secretKey = 'b8@#gF^7jD!kLQpO4rT$zXcV9nW1yU5&'; // Example of a strong secret key
+  const secretKey = 'b8@#gF^7jD!kLQpO4rT$zXcV9nW1yU5&';
 
   useEffect(() => {
     if (localStorage.getItem('isUserPlaying') === '"no"') {
@@ -57,7 +62,9 @@ const QuizPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const encryptedData = localStorage.getItem('quizData');
-        const savedAnswers = JSON.parse(localStorage.getItem('selectedAnswers') || '[]');
+        const savedAnswers = JSON.parse(
+          localStorage.getItem('selectedAnswers') || '[]'
+        );
         if (!encryptedData) {
           throw new Error('No quiz data found');
         }
@@ -65,14 +72,19 @@ const QuizPage: React.FC = () => {
         const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
         setQuestionsAndAnswers(
-          decryptedData.results.map((questionObject: QuestionObject, index: number) => {
-            return {
-              question: questionObject.question,
-              shuffledAnswers: shuffle([...questionObject.incorrect_answers, questionObject.correct_answer]),
-              correctAnswer: questionObject.correct_answer,
-              selectedAnswer: savedAnswers[index] || '',
-            };
-          })
+          decryptedData.results.map(
+            (questionObject: QuestionObject, index: number) => {
+              return {
+                question: questionObject.question,
+                shuffledAnswers: shuffle([
+                  ...questionObject.incorrect_answers,
+                  questionObject.correct_answer,
+                ]),
+                correctAnswer: questionObject.correct_answer,
+                selectedAnswer: savedAnswers[index] || '',
+              };
+            }
+          )
         );
 
         setLoading(false);
@@ -87,18 +99,25 @@ const QuizPage: React.FC = () => {
   }, []);
 
   const updateAnswer = (currentQuestion: string, answer: string) => {
-    const updatedQuestionsAndAnswers = questionsAndAnswers.map((questionObject: QuestionAndAnswer) => {
-      return questionObject.question === currentQuestion ? { ...questionObject, selectedAnswer: answer } : questionObject;
-    });
+    const updatedQuestionsAndAnswers = questionsAndAnswers.map(
+      (questionObject: QuestionAndAnswer) => {
+        return questionObject.question === currentQuestion
+          ? { ...questionObject, selectedAnswer: answer }
+          : questionObject;
+      }
+    );
 
-    setQuestionsAndAnswers(updatedQuestionsAndAnswers);
-    // Save updated answers to localStorage
-    const selectedAnswers = updatedQuestionsAndAnswers.map((q) => q.selectedAnswer);
+    setQuestionsAndAnswers(updatedQuestionsAndAnswers);    
+    const selectedAnswers = updatedQuestionsAndAnswers.map(
+      (q) => q.selectedAnswer
+    );
     localStorage.setItem('selectedAnswers', JSON.stringify(selectedAnswers));
   };
 
   const submitAnswers = () => {
-    const notAllAnswered = questionsAndAnswers.some((questionObject) => questionObject.selectedAnswer === '');
+    const notAllAnswered = questionsAndAnswers.some(
+      (questionObject) => questionObject.selectedAnswer === ''
+    );
 
     setWarning(notAllAnswered);
 
@@ -131,13 +150,17 @@ const QuizPage: React.FC = () => {
     setShowResult(false);
     setNumCorrectAnswer(0);
 
-    localStorage.removeItem('selectedAnswers'); // Clear the saved answers
+    localStorage.removeItem('selectedAnswers');
     localStorage.removeItem('quizData');
 
     navigate('/dashboard');
   };
 
-  const unansweredQuestions = questionsAndAnswers.map((questionObject, index) => (questionObject.selectedAnswer === '' ? index + 1 : null)).filter((questionNumber) => questionNumber !== null);
+  const unansweredQuestions = questionsAndAnswers
+    .map((questionObject, index) =>
+      questionObject.selectedAnswer === '' ? index + 1 : null
+    )
+    .filter((questionNumber) => questionNumber !== null);
 
   const questionElements = questionsAndAnswers.map((questionObject, index) => {
     const questionNumber = index + 1;
@@ -169,13 +192,17 @@ const QuizPage: React.FC = () => {
   return (
     <>
       {loading ? (
-        <p className="flex items-center justify-center h-screen text-xl">Loading ...</p>
+        <p className="flex items-center justify-center h-screen text-xl">
+          Loading ...
+        </p>
       ) : (
         <>
           <div className="max-w-5xl mx-auto flex flex-col justify-center items-center mt-10 space-y-2 mb-[50px]">
             <div className="container px-2 md:px-4 py-2 mx-auto">
               <div id="google_translate_element"></div>
-              <h1 className="text-3xl !font-bold uppercase text-center mb-11 text-[#f9a826]">Quiz Page</h1>
+              <h1 className="text-3xl !font-bold uppercase text-center mb-11 text-[#f9a826]">
+                Quiz Page
+              </h1>
               <GoogleTranslate />
               {questionElements}
             </div>
@@ -186,13 +213,18 @@ const QuizPage: React.FC = () => {
                   <p className="text-red-500 font-semibold mt-3 mb-5">
                     {unansweredQuestions.length > 0 ? (
                       <>
-                        <p className="text-red-500 text-lg font-semibold">Please answer all questions before submit!</p>
+                        <p className="text-red-500 text-lg font-semibold">
+                          Please answer all questions before submit!
+                        </p>
                         Unanswered Questions:
                         <div className="mt-7 flex flex-wrap gap-10 justify-start">
                           {unansweredQuestions.map((num, index) => (
                             <div key={num} className="">
                               {index > 0 && ' '}
-                              <a href={`#question-${num}`} className="rounded-lg underline bg-red-500 w-[3rem] h-[3rem] grid place-items-center text-lg block m-1 text-white">
+                              <a
+                                href={`#question-${num}`}
+                                className="rounded-lg underline bg-red-500 w-[3rem] h-[3rem] grid place-items-center text-lg block m-1 text-white"
+                              >
                                 {num}
                               </a>
                             </div>
@@ -201,7 +233,9 @@ const QuizPage: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        <p className="text-green-500 text-xl font-bold">All question already answered, you can submit now</p>
+                        <p className="text-green-500 text-xl font-bold">
+                          All question already answered, you can submit now
+                        </p>
                       </>
                     )}
                   </p>
@@ -211,7 +245,10 @@ const QuizPage: React.FC = () => {
 
             {questionsAndAnswers.length > 0 && !showResult ? (
               <>
-                <button onClick={submitAnswers} className="bg-[#f9a826] hover:bg-yellow-600 font-bold text-white rounded-md mt-11 px-6 py-3 w-fit mb-7">
+                <button
+                  onClick={submitAnswers}
+                  className="bg-[#f9a826] hover:bg-yellow-600 font-bold text-white rounded-md mt-11 px-6 py-3 w-fit mb-7"
+                >
                   Submit
                 </button>
                 <br />
@@ -221,15 +258,26 @@ const QuizPage: React.FC = () => {
 
             {showResult && (
               <div className="w-full flex gap-3 rounded-lg justify-center py-11">
-                <p className="p-3 bg-yellow-500 rounded-lg">Total Question: 15</p>
-                <p className="p-3 bg-green-500 rounded-lg">Correct Answer: {numCorrectAnswer}</p>
+                <p className="p-3 bg-yellow-500 rounded-lg">
+                  Total Question: {questionsAndAnswers.length}
+                </p>
+                <p className="p-3 bg-green-500 rounded-lg">
+                  Correct Answer: {numCorrectAnswer}
+                </p>
               </div>
             )}
 
             {showResult && (
-              <button onClick={resetQuiz} className="bg-blue-500 hover:bg-blue-800 font-bold text-white rounded-md px-4 py-2">
-                Go to Dashboard
-              </button>
+              <>
+                <button
+                  onClick={resetQuiz}
+                  className="bg-blue-500 hover:bg-blue-800 font-bold text-white rounded-md px-4 py-2"
+                >
+                  Go to Dashboard
+                </button>
+                <br />
+                <br />
+              </>
             )}
           </div>
         </>
