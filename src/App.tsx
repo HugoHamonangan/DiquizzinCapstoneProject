@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import LandingPage from './pages/LandingPage';
@@ -17,6 +17,8 @@ import QuizPage from './pages/QuizPage';
 
 const App: React.FC = () => {
   const location = useLocation();
+  const [difficulty, setDifficulty] = useState<string>('');
+  const [amountOfQuestion, setAmountOfQuestion] = useState<number>(0);
 
   const { user } = UserAuth();
 
@@ -52,9 +54,7 @@ const App: React.FC = () => {
             element={
               <>
                 <Navbar />
-                <PageTransition>
-                  {user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
-                </PageTransition>
+                <PageTransition>{user ? <Navigate to="/dashboard" replace /> : <LoginPage />}</PageTransition>
               </>
             }
           />
@@ -86,7 +86,7 @@ const App: React.FC = () => {
             path="/category"
             element={
               <ProtectedRoute user={user}>
-                <CategoryPage />
+                <CategoryPage difficulty={difficulty} setDifficulty={setDifficulty} amountOfQuestion={amountOfQuestion} setAmountOfQuestion={setAmountOfQuestion} />
               </ProtectedRoute>
             }
           />
@@ -95,7 +95,7 @@ const App: React.FC = () => {
             element={
               <PageTransition>
                 <ProtectedRoute user={user}>
-                  <QuizPage />
+                  <QuizPage difficulty={difficulty} amountOfQuestion={amountOfQuestion} />
                 </ProtectedRoute>
               </PageTransition>
             }
