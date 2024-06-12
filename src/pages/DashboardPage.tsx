@@ -26,7 +26,7 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="relative mx-auto px-10 md:px-0 flex flex-col items-center justify-center gap-7 h-screen pt-9 mt-5">
+    <div className="relative mx-auto px-10 md:px-0 flex flex-col items-center justify-center gap-7 h-screen pt-9 mt-5 ">
       <AnimatePresence>
         {!isClicked && (
           <motion.div

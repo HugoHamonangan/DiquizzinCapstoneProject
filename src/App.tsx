@@ -11,9 +11,9 @@ import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { UserAuth } from './context/AuthContext';
 import NotFoundPage from './pages/NotFoundPage';
-// import PlayPage from './pages/PlayPage';
 import CategoryPage from './pages/CategoryPage';
 import QuizPage from './pages/QuizPage';
+
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -54,7 +54,9 @@ const App: React.FC = () => {
             element={
               <>
                 <Navbar />
-                <PageTransition>{user ? <Navigate to="/dashboard" replace /> : <LoginPage />}</PageTransition>
+                <PageTransition>
+                  {user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
+                </PageTransition>
               </>
             }
           />
@@ -86,18 +88,26 @@ const App: React.FC = () => {
             path="/category"
             element={
               <ProtectedRoute user={user}>
-                <CategoryPage difficulty={difficulty} setDifficulty={setDifficulty} amountOfQuestion={amountOfQuestion} setAmountOfQuestion={setAmountOfQuestion} />
+                <CategoryPage
+                  difficulty={difficulty}
+                  setDifficulty={setDifficulty}
+                  amountOfQuestion={amountOfQuestion}
+                  setAmountOfQuestion={setAmountOfQuestion}
+                />
               </ProtectedRoute>
             }
           />
           <Route
             path="/quiz"
             element={
-              <PageTransition>
-                <ProtectedRoute user={user}>
-                  <QuizPage difficulty={difficulty} amountOfQuestion={amountOfQuestion} />
-                </ProtectedRoute>
-              </PageTransition>
+              <ProtectedRoute user={user}>
+                <QuizPage
+                  difficulty={difficulty}
+                  setDifficulty={setDifficulty}
+                  amountOfQuestion={amountOfQuestion}
+                  setAmountOfQuestion={setAmountOfQuestion}
+                />
+              </ProtectedRoute>
             }
           />
         </Routes>

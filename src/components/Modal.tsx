@@ -1,10 +1,10 @@
 import React from 'react';
-import { useAppDispatch } from '../states/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../states/hooks/hooks';
 import { setIsUserPlayingYes } from '../states/slices/isUserPlayingSlices';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import { showAlert } from '../utils/sweetAlert';
-import { motion, AnimatePresence } from 'framer-motion';
+import { translate } from '../utils/helperFunction';
 
 interface Props {
   modal: boolean;
@@ -30,12 +30,21 @@ const Modal: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const secretKey = 'b8@#gF^7jD!kLQpO4rT$zXcV9nW1yU5&';
   const navigate = useNavigate();
+  const language = useAppSelector((state) => state.language);
 
   const handlePlay = async (api: string) => {
     if (difficulty === '' && amountOfQuestion === 0) {
       await showAlert(
-        'Choose Difficulty and Amount Of Questions',
-        'Please choose difficulty and amount of question first',
+        translate(
+          language,
+          'Choose Difficulty and Amount Of Questions',
+          'Pilih Kesulitan dan Jumlah Pertanyaan'
+        ),
+        translate(
+          language,
+          'Please choose difficulty and amount of question first',
+          'Silakan pilih kesulitan dan jumlah pertanyaan terlebih dahulu'
+        ),
         'error'
       );
       return;
@@ -43,8 +52,12 @@ const Modal: React.FC<Props> = ({
 
     if (difficulty === '') {
       await showAlert(
-        'Choose Difficulty',
-        'Please choose difficulty first',
+        translate(language, 'Choose Difficulty', 'Pilih Kesulitan'),
+        translate(
+          language,
+          'Please choose difficulty first',
+          'Silakan pilih kesulitan terlebih dahulu'
+        ),
         'error'
       );
       return;
@@ -52,8 +65,16 @@ const Modal: React.FC<Props> = ({
 
     if (amountOfQuestion === 0) {
       await showAlert(
-        'Choose Amount Of Question',
-        'Please choose amount of question first',
+        translate(
+          language,
+          'Choose Amount Of Question',
+          'Pilih Jumlah Pertanyaan'
+        ),
+        translate(
+          language,
+          'Please choose amount of question first',
+          'Silakan pilih jumlah pertanyaan terlebih dahulu'
+        ),
         'error'
       );
       return;
@@ -71,8 +92,12 @@ const Modal: React.FC<Props> = ({
 
       if (data.response_code !== 0) {
         await showAlert(
-          'not enough question',
-          'question is not enough, please try another difficulties and amount of questions.',
+          translate(language, 'Not enough questions', 'Pertanyaan tidak cukup'),
+          translate(
+            language,
+            'Questions are not enough, please try another difficulties and amount of questions',
+            'Pertanyaannya tidak cukup, silakan coba kesulitan dan jumlah pertanyaan lain'
+          ),
           'error'
         );
         return;
@@ -88,29 +113,23 @@ const Modal: React.FC<Props> = ({
   const lastAPI: string = `https://opentdb.com/api.php?amount=${amountOfQuestion}&category=${category}&difficulty=${difficulty}&type=multiple`;
 
   const title = (number: number) => {
-    if (number === 19) {
-      return 'Mathematic';
-    } else if (number === 21) {
-      return 'Sports';
-    } else if (number === 22) {
-      return 'Geography';
-    } else if (number === 27) {
-      return 'Animals';
-    } else if (number === 10) {
-      return 'Books';
-    } else if (number === 18) {
-      return 'Computer';
-    } else {
-      return 'not found';
-    }
+    const translatedTitles: { [key: string]: string } = {
+      19: translate(language, 'Mathematics', 'Matematika'),
+      21: translate(language, 'Sports', 'Olahraga'),
+      22: translate(language, 'Geography', 'Geografi'),
+      27: translate(language, 'Animals', 'Hewan'),
+      10: translate(language, 'Books', 'Buku'),
+      18: translate(language, 'Computer', 'Komputer'),
+    };
+
+    return (
+      translatedTitles[number] ||
+      translate(language, 'Not Found', 'Tidak Ditemukan')
+    );
   };
 
   return (
     <>
-      <AnimatePresence>
-        <motion.div></motion.div>
-      </AnimatePresence>
-
       <div
         className={`${
           !modal
@@ -119,7 +138,7 @@ const Modal: React.FC<Props> = ({
         } fixed inset-0 w-full h-screen z-50 bg-black transition-all cursor-pointer`}
       ></div>
       <div
-        className={` ${
+        className={`${
           !modal
             ? 'opacity-0 invisible pointer-events-none'
             : 'opacity-100 visible pointer-events-auto'
@@ -144,21 +163,29 @@ const Modal: React.FC<Props> = ({
               {title(category)} Quiz
             </h1>
             <p className="text-[#585858] text-sm leading-7 pr-9">
-              <h3 className="text-sm text-[#585858] font-bold mb-2">Rules :</h3>
+              <h3 className="text-sm text-[#585858] font-bold mb-2">
+                {translate(language, 'Rules', 'Aturan')}:
+              </h3>
               <ul>
                 <li className="list-disc ml-4">
-                  Easy get 2 points, medium get 3 points, hard get 5 points per
-                  each question true
+                  {translate(
+                    language,
+                    'Easy get 2 points, medium get 3 points, hard get 5 points per each question true',
+                    'Mudah dapat 2 poin, sedang dapat 3 poin, sulit dapat 5 poin untuk setiap pertanyaan yang benar'
+                  )}
                 </li>
                 <li className="list-disc ml-4">
-                  Extra score base of amount of questions you have (7 = +50
-                  points, 10 = +70 points, 15 = +111 points)
+                  {translate(
+                    language,
+                    'Extra score based on amount of questions you have (7 = +50 points, 10 = +70 points, 15 = +111 points)',
+                    'Skor tambahan berdasarkan jumlah pertanyaan yang Anda miliki (7 = +50 poin, 10 = +70 poin, 15 = +111 poin)'
+                  )}
                 </li>
               </ul>
             </p>
             <div className="flex flex-col mt-5 gap-4">
               <h3 className="text-sm text-[#585858] font-bold">
-                Difficulties :
+                {translate(language, 'Difficulties', 'Tingkat Kesulitan')}:
               </h3>
               <div className="flex gap-3 text-white font-bold">
                 <button
@@ -169,7 +196,7 @@ const Modal: React.FC<Props> = ({
                       : 'bg-[#f9a826] hover:bg-[#004399]'
                   }`}
                 >
-                  Easy
+                  {translate(language, 'Easy', 'Mudah')}
                 </button>
                 <button
                   onClick={() => handleDifficulty('medium')}
@@ -179,7 +206,7 @@ const Modal: React.FC<Props> = ({
                       : 'bg-[#f9a826] hover:bg-[#004399]'
                   }`}
                 >
-                  Medium
+                  {translate(language, 'Medium', 'Sedang')}
                 </button>
                 <button
                   onClick={() => handleDifficulty('hard')}
@@ -189,13 +216,18 @@ const Modal: React.FC<Props> = ({
                       : 'bg-[#f9a826] hover:bg-[#004399]'
                   }`}
                 >
-                  Hard
+                  {translate(language, 'Hard', 'Sulit')}
                 </button>
               </div>
             </div>
             <div className="flex flex-col mt-5 gap-4">
               <h3 className="text-sm text-[#585858] font-bold">
-                Amount Of Question :
+                {translate(
+                  language,
+                  'Amount Of Questions',
+                  'Jumlah Pertanyaan'
+                )}
+                :
               </h3>
               <div className="flex gap-3 text-white font-bold">
                 <button
@@ -234,7 +266,7 @@ const Modal: React.FC<Props> = ({
               className="text-white w-full p-3 bg-[#f9a826] hover:bg-[#9b6d24] transition-all mt-8 mb-7 rounded-lg font-bold"
               onClick={() => handlePlay(lastAPI)}
             >
-              Play The Quiz
+              {translate(language, 'Play The Quiz', 'Mainkan Kuis')}
             </button>
           </div>
         </div>

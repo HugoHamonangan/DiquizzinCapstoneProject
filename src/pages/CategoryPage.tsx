@@ -6,8 +6,14 @@ import animalsImage from '../img/animalsImage.png';
 import booksImage from '../img/booksImage.png';
 import computersImage from '../img/computerImage.png';
 import { Link, useNavigate } from 'react-router-dom';
-import PageTransition from '../components/PageTransition';
+import { useAnimate, stagger } from 'framer-motion';
 import Modal from '../components/Modal';
+import HangingLanguageChanger from '../components/HangingLanguageChanger';
+
+import { translate } from '../utils/helperFunction';
+
+import { useAppSelector } from '../states/hooks/hooks';
+
 
 type InterfaceDataOfCard = {
   img: string;
@@ -55,13 +61,20 @@ const dataOfCard: InterfaceDataOfCard[] = [
   },
 ];
 
-const CategoryPage: React.FC<Props> = ({ difficulty, setDifficulty, amountOfQuestion, setAmountOfQuestion }) => {
+const CategoryPage: React.FC<Props> = ({
+  difficulty,
+  setDifficulty,
+  amountOfQuestion,
+  setAmountOfQuestion,
+}) => {
   const [modal, setModal] = useState<boolean>(false);
-  // const [difficulty, setDifficulty] = useState<string>('');
-  // const [amountOfQuestion, setAmountOfQuestion] = useState<number>(0);
   const [imgModal, setImgModal] = useState<string>('');
   const [category, setCategory] = useState<number>(0);
+  const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
+
+  const [scope, animate] = useAnimate();
   const navigate = useNavigate();
+  const language = useAppSelector((state) => state.language);
 
   useEffect(() => {
     if (localStorage.getItem('isUserPlaying') === '"yes"') {
@@ -83,37 +96,100 @@ const CategoryPage: React.FC<Props> = ({ difficulty, setDifficulty, amountOfQues
     setCategory(category);
   };
 
+  useEffect(() => {
+    const images = Array.from(document.images);
+    let loadedImagesCount = 0;
+
+    const handleImageLoad = () => {
+      loadedImagesCount++;
+      if (loadedImagesCount === images.length) {
+        setTimeout(() => setImagesLoaded(true), 130); // Add delay before animations
+      }
+    };
+
+    images.forEach((image) => {
+      if (image.complete) {
+        handleImageLoad();
+      } else {
+        image.addEventListener('load', handleImageLoad);
+      }
+    });
+
+    return () => {
+      images.forEach((image) => {
+        image.removeEventListener('load', handleImageLoad);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (imagesLoaded) {
+      const cardItems = document.querySelectorAll('.card-item');
+
+      animate(
+        cardItems,
+        { top: [100, 0], opacity: [0, 0, 1] },
+        { delay: stagger(0.2) }
+      );
+    }
+  }, [imagesLoaded, animate]);
+
   return (
     <>
-      <Modal modal={modal} handleModal={handleModal} difficulty={difficulty} handleDifficulty={handleDifficulty} amountOfQuestion={amountOfQuestion} handleAmountOfQuestion={handleAmountOfQuestion} img={imgModal} category={category} />
+      <Modal
+        modal={modal}
+        handleModal={handleModal}
+        difficulty={difficulty}
+        handleDifficulty={handleDifficulty}
+        amountOfQuestion={amountOfQuestion}
+        handleAmountOfQuestion={handleAmountOfQuestion}
+        img={imgModal}
+        category={category}
+      />
 
-      <PageTransition>
-        <div className="container mx-auto px-10 md:px-0 flex flex-col gap-7">
-          <h1 className="text-[#ff964a] text-2xl text-center font-bold mt-11 mb-6">CHOOSE THE QUIZZES TOPIC YOU WANT TO PLAY</h1>
-          <div className="flex justify-center gap-7 flex-wrap">
-            {dataOfCard.map((item, index) => (
-              <div className="flex flex-col shadow-lg p-0 rounded-lg overflow-hidden pb-6 hover:scale-105 transition-all cursor-pointer" key={index}>
-                <div className="overflow-hidden border">
-                  <img src={item.img} alt={item.img} className="object-cover w-full scale-105 rounded-lg" />
-                </div>
+      <HangingLanguageChanger />
 
-                <div className="flex flex-col gap-2 my-5 px-5">
-                  <h3 className="font-bold">Quiz</h3>
-                  <h1 className="font-extrabold text-xl">{item.title}</h1>
-                </div>
-
-                <button className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all p-2 mx-5 font-bold" onClick={() => handleModal(item.img, item.category)}>
-                  Play
-                </button>
+      <div className="container mx-auto px-10 md:px-0 flex flex-col gap-7">
+        <h1 className="text-[#ff964a] text-2xl text-center font-bold mt-11 mb-6">
+          {translate(language, 'CHOOSE THE QUIZZES TOPIC YOU WANT TO PLAY', 'MOHON PILIH TOPIK QUIZ')}
+        </h1>
+        <div className="flex justify-center gap-7 flex-wrap">
+          {dataOfCard.map((item, index) => (
+            <div
+              className="flex flex-col shadow-lg p-0 rounded-lg overflow-hidden pb-6 hover:scale-105 transition-all cursor-pointer relative card-item opacity-0"
+              key={index}
+              ref={scope}
+            >
+              <div className="overflow-hidden border">
+                <img
+                  src={item.img}
+                  alt={item.img}
+                  className="object-cover w-full scale-105 rounded-lg"
+                />
               </div>
-            ))}
-          </div>
 
-          <Link to={'/dashboard'} className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all py-3 px-5 mx-auto my-20 font-bold w-fit">
-            Back To Dashboard
-          </Link>
+              <div className="flex flex-col gap-2 my-5 px-5">
+                <h3 className="font-bold">Quiz</h3>
+                <h1 className="font-extrabold text-xl">{item.title}</h1>
+              </div>
+
+              <button
+                className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all p-2 mx-5 font-bold"
+                onClick={() => handleModal(item.img, item.category)}
+              >
+                Play
+              </button>
+            </div>
+          ))}
         </div>
-      </PageTransition>
+
+        <Link
+          to={'/dashboard'}
+          className="rounded-lg text-white bg-[#ff964a] hover:bg-[#bc6222] transition-all py-3 px-5 mx-auto my-20 font-bold w-fit"
+        >
+          Back To Dashboard
+        </Link>
+      </div>
     </>
   );
 };
