@@ -23,8 +23,9 @@ const HowToPlaySection = () => {
           </p>
         </div>
         <iframe
-          width="1060"
+          width="400"
           height="315"
+          className="w-full"
           src="https://www.youtube.com/embed/EKRN1keUKUM?si=rs6Xq_FxB_QtV4Ev"
           title="YouTube video player"
           frameBorder="0"
