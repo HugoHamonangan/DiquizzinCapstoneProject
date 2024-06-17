@@ -9,7 +9,7 @@ const HangingLanguageChanger: React.FC = () => {
   console.log(language);
 
   return (
-    <div className="fixed -right-2 top-16 z-50">
+    <div className="fixed -right-2 top-32 z-50">
       {language === 'id' ? (
         <button onClick={() => dispatch(setEnglish())} className='p-3 pr-6 rounded-md bg-slate-100 shadow-lg'>🇮🇩</button>
       ) : (

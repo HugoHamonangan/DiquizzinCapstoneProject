@@ -30,7 +30,7 @@ const HeroSection = () => {
           </span>
         </h1>
 
-        <p className="pr-[4rem] max-w-[40rem] leading-8">
+        <p className="pr-[1.8rem] md:pr-[4rem] max-w-[40rem] leading-8">
           {translate(
             language,
             "Learning by playing is one of the enjoyable moments, and you found the great platform to do that, so let's play !!!",
@@ -38,10 +38,10 @@ const HeroSection = () => {
           )}
         </p>
         <div className="flex gap-4">
-          <button className="py-3 px-4 bg-[#0C356A] text-white rounded-lg">
+          <button className="py-3 px-4 bg-[#0C356A] hover:bg-blue-700 text-white rounded-lg transition-all">
             {translate(language, 'Get Started', 'Ayo Mulai')}
           </button>
-          <button className="py-3 px-4 border border-[#0C356A] rounded-lg">
+          <button className="py-3 px-4 border border-[#0C356A] hover:bg-[#0C356A] hover:text-white rounded-lg transition-all">
             {translate(language, 'Learn More', 'Selengkapnya')}
           </button>
         </div>

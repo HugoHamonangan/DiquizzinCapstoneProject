@@ -78,7 +78,7 @@ const CategoryPage: React.FC<Props> = ({
 
   useEffect(() => {
     if (localStorage.getItem('isUserPlaying') === '"yes"') {
-      // navigate('/quiz');
+      navigate('/quiz');
     }
   }, [navigate]);
 
@@ -103,7 +103,7 @@ const CategoryPage: React.FC<Props> = ({
     const handleImageLoad = () => {
       loadedImagesCount++;
       if (loadedImagesCount === images.length) {
-        setTimeout(() => setImagesLoaded(true), 130); // Add delay before animations
+        setTimeout(() => setImagesLoaded(true), 130);
       }
     };
 

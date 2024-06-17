@@ -3,6 +3,7 @@ import instagramIcon from '../img/InstagramIcon.png';
 import youtubeIcon from '../img/YouTubeIcon.png';
 import githubIcon from '../img/GitHubIcon.png';
 import facebookIcon from '../img/FacebookIcon.png';
+import linkportfolio from '../img/linkportfolio.png';
 
 type CardProps = {
   img: string;
@@ -12,6 +13,7 @@ type CardProps = {
   youtubeUser: string;
   githubUser: string;
   facebookUser: string;
+  linkPortfolio: string;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -22,6 +24,7 @@ const Card: React.FC<CardProps> = ({
   youtubeUser,
   githubUser,
   facebookUser,
+  linkPortfolio,
 }) => {
   return (
     <div className=" sm:w-[22rem] shadow-card relative overflow-hidden rounded-lg">
@@ -74,6 +77,17 @@ const Card: React.FC<CardProps> = ({
               className="w-[2.4rem] hover:scale-125 transition-all"
               src={facebookIcon}
               alt="Facebook"
+            />
+          </a>
+          <a
+            href={`${linkPortfolio}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              className="w-[2.4rem] hover:scale-125 transition-all"
+              src={linkportfolio}
+              alt="linkPortfolio"
             />
           </a>
         </div>

@@ -43,7 +43,7 @@ const DashboardPage: React.FC = () => {
                 `HALLO ${user?.name} SELAMAT DATANG DI DIQUIZZIN, AYO MULAI!!!`
               )}
             </h1>
-            <p className="w-full max-w-[40rem] text-center">
+            <p className="w-full max-w-[40rem] text-center leading-8">
               {translate(
                 language,
                 `Its ok to search the result on the internet, remember the important thing to do is you need to read the information, and become the person that rich of knowledge !!!`,

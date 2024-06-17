@@ -52,8 +52,8 @@ const LeaderboardItem: React.FC<LeaderboardItemProps> = ({
           <div className="flex items-center gap-9">
             <h3 className="font-bold text-3xl">{ranking}</h3>
             <div className="flex flex-col gap-1">
-              <p className="font-bold text-xl">{name}</p>
-              <p className="text-sm md:text-base">{email}</p>
+              <h3 className="font-bold text-xl text-black">{name}</h3>
+              <p className="text-sm md:text-base text-black">{email}</p>
             </div>
           </div>
           <div className="flex items-center gap-11">

@@ -140,9 +140,9 @@ const Modal: React.FC<Props> = ({
       <div
         className={`${
           !modal
-            ? 'opacity-0 invisible pointer-events-none'
-            : 'opacity-100 visible pointer-events-auto'
-        } transition-all delay-75 fixed inset-0 w-full z-50 flex items-center justify-center`}
+            ? 'opacity-0 scale-0 invisible pointer-events-none'
+            : 'opacity-100 scale-95 visible pointer-events-auto'
+        } funky-animation delay-75 fixed inset-0 w-full z-50 flex items-center justify-center`}
       >
         <div className="bg-white rounded-lg shadow-lg w-full mx-7 max-w-4xl grid md:grid-cols-2 gap-0">
           <div className="overflow-hidden hidden md:block relative rounded-s-lg ">

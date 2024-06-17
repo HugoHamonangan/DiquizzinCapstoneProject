@@ -11,32 +11,41 @@ const teamMembers = [
   {
     img: hugo,
     name: 'Hugo Hamonangan',
-    explanationEn: 'Responsible for making design, frontend, and helping backend of this website application.',
-    explanationId: 'Bertanggung jawab untuk membuat desain, frontend, dan membantu backend dari aplikasi situs web ini.',
+    explanationEn:
+      'Responsible for making design, frontend, and helping backend of this website application.',
+    explanationId:
+      'Bertanggung jawab untuk membuat desain UI, frontend, animasi, dan membantu backend dari aplikasi situs web ini.',
     instagramUser: 'hugo_hamonangan',
     facebookUser: 'hugo.hamonangan.11',
     githubUser: 'HugoHamonangan',
     youtubeUser: '@hugohamonangan9639',
+    linkPortfolio: 'https://hugohamonangan.vercel.app',
   },
   {
     img: gimnastiar,
     name: 'Muh. Gimnastiar Idris',
-    explanationEn: 'Responsible for making design and helping to develop this website application.',
-    explanationId: 'Bertanggung jawab untuk membuat desain dan membantu pengembangan aplikasi dari aplikasi situs web ini.',
+    explanationEn:
+      'Responsible for making design and helping to develop this website application.',
+    explanationId:
+      'Bertanggung jawab untuk membuat desain dan membantu pengembangan aplikasi dari aplikasi situs web ini.',
     instagramUser: 'gimnastiar_idris',
     facebookUser: 'gimnastiar.idris',
     githubUser: 'GimnastiarIdris',
     youtubeUser: '@gimnastiaridris',
+    linkPortfolio: '',
   },
   {
     img: johan,
     name: 'Johan Sitanggang',
-    explanationEn: 'Responsible for making Backend, Authentication and API of this website application.',
-    explanationId: 'Bertanggung jawab untuk membuat dan mengintegrasi Backend, autentikasi dan serta API dari aplikasi situs web ini.',
+    explanationEn:
+      'Responsible for making Backend, Authentication and API of this website application.',
+    explanationId:
+      'Bertanggung jawab untuk membuat dan mengintegrasi Backend, autentikasi dan serta API dari aplikasi situs web ini.',
     instagramUser: 'johan_sitanggang',
     facebookUser: 'johan.sitanggang',
     githubUser: 'JohanSitanggang',
     youtubeUser: '@johansitanggang',
+    linkPortfolio: '',
   },
 ];
 
@@ -46,8 +55,16 @@ const TeamSection: React.FC = () => {
   return (
     <section className="container mx-auto px-10 md:px-0 pt-[7rem]">
       <ScrollReveal>
-        <h3 className="text-[#0C356A] text-center font-extrabold text-xl mb-10">{translate(language, 'Meet Our Team', 'Tim Kami')}</h3>
-        <h1 className="font-extrabold text-center text-3xl md:w-[40rem] mx-auto mb-[5rem]">{translate(language, 'We Are students from Dicoding Academy MSIB Batch 6', 'Kami adalah siswa dari Dicoding Academy MSIB Batch 6')}</h1>
+        <h3 className="text-[#0C356A] text-center font-extrabold text-xl mb-10">
+          {translate(language, 'Meet Our Team', 'Tim Kami')}
+        </h3>
+        <h1 className="font-extrabold text-center text-3xl md:w-[40rem] mx-auto mb-[5rem]">
+          {translate(
+            language,
+            'We Are students from Dicoding Academy MSIB Batch 6',
+            'Kami adalah siswa dari Dicoding Academy MSIB Batch 6'
+          )}
+        </h1>
       </ScrollReveal>
       <div className="flex flex-wrap justify-center gap-8 items-center ">
         {teamMembers.map((member) => (
@@ -55,11 +72,16 @@ const TeamSection: React.FC = () => {
             <Card
               img={member.img}
               name={member.name}
-              explanation={translate(language, member.explanationEn, member.explanationId)}
+              explanation={translate(
+                language,
+                member.explanationEn,
+                member.explanationId
+              )}
               instagramUser={member.instagramUser}
               facebookUser={member.facebookUser}
               githubUser={member.githubUser}
               youtubeUser={member.youtubeUser}
+              linkPortfolio={member.linkPortfolio}
             />
           </ScrollReveal>
         ))}

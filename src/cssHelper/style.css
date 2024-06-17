@@ -14,6 +14,11 @@ body {
   user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
+p {
+  font-size: 14.3px !important;
+  color: #4b4b4b;
+}
+
 .poppins-thin {
   font-family: 'Poppins', sans-serif;
   font-weight: 100;
@@ -201,5 +206,11 @@ body {
   .container {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 677px) {
+  p {
+    font-size: 15.7px !important;
   }
 }
